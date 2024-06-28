@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    div(class="signup-form-div")
+        h1= title
+        form(method="POST")
+            div(class="form-floating mb-3")
+                input(type="text" name="username" class="form-control" id="username" placeholder="Username" required)
+                label(for="username") Username
+            div(class="form-floating mb-3")
+                input(type="password" name="password" class="form-control" id="password" placeholder="Password" required)
+                label(for="password") Password
+            button(type="submit" class="btn btn-success signupBtn") Sign Up
+        if errors
+            for error in errors
+                div(class="alert alert-warning alert-dismissible fade show error-alert-div" role="alert")
+                    p= error.msg
+                    button(type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close")

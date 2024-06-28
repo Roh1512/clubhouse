@@ -1,0 +1,16 @@
+extends layout 
+block content 
+    h1 All Users
+    //- Search form
+    form(action="/users" method="get" class="user-search-form")
+        div(class="input-group mb-3")
+            input(type="text" name="search" class="form-control" placeholder="Search by username, first name, or last name" aria-label="Search")
+            button(type="submit" class="btn btn-primary") Search
+    div(class="allusers-div")
+        if all_users.length 
+            each user in all_users 
+                div(class="card")
+                    div(class="card-header")= user.username
+                    div(class="card-body")
+                        h5(class="card-title")= user.fullName
+                        a(href=user.url class="btn btn-success") View User's Profile

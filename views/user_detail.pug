@@ -1,0 +1,10 @@
+extends layout
+
+block content
+    div(class="user-profile-div")
+        h1(class="profile-heading") #{userToDisplay.firstName} #{userToDisplay.lastName}
+
+        div(class="user-details-div")
+            p Username: #{userToDisplay.username}
+            p #{userToDisplay.membershipStatus} user 
+            p Profile created at: #{userToDisplay.createdAt}

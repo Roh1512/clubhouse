@@ -27,6 +27,7 @@ const strategy = new LocalStrategy(async (username, password, done) => {
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
+  console.log("Serialize User: ", user);
   done(null, user.id);
 });
 

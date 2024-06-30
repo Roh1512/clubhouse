@@ -210,7 +210,7 @@ exports.login_post = [
           console.log("req.logIn() ", err);
           return next(err);
         }
-        return res.redirect("/posts");
+        return res.redirect("/");
       });
     })(req, res, next);
   }),

@@ -26,14 +26,16 @@ const postsRouter = require("./routes/posts");
 
 const app = express();
 
+console.log("NODE_ENV:", process.env.NODE_ENV);
+console.log("Secure flag:", process.env.NODE_ENV === "production");
+app.set("trust proxy", 1);
+
 // Set up rate limiter: maximum of twenty requests per minute
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
   max: 40,
 });
-// Apply rate limiter to all requests
-app.use(limiter);
 
 const mongodb_uri = process.env.MONGODB_URI;
 async function main() {
@@ -50,6 +52,8 @@ async function main() {
 
 main();
 
+// Apply rate limiter to all requests
+app.use(limiter);
 app.use(
   helmet.contentSecurityPolicy({
     directives: {
@@ -87,7 +91,8 @@ app.use(
     saveUninitialized: false,
     store: sessionStore,
     cookie: {
-      secure: true,
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+      secure: process.env.NODE_ENV === "production",
     },
   })
 );

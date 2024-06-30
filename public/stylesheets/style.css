@@ -123,6 +123,7 @@ a {
 /*All posts page*/
 .posts-div {
   width: 100%;
+  max-width: fit-content;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -131,10 +132,16 @@ a {
   padding: 10px 20px;
   gap: 100px;
 }
-.post-card {
-  max-width: 390px;
+.post-card-username {
+  text-align: start;
+  padding: 10px;
+  border-bottom: 1px solid rgb(107, 106, 106);
+  text-decoration: none;
+  font-size: 1.5rem;
+  color: inherit;
+  font-weight: 600;
+  background-color: rgb(223, 223, 223);
 }
-
 .post-img {
   height: 400px;
   object-fit: scale-down;
@@ -185,13 +192,10 @@ a {
 }
 .post-details-card {
   border: 1px solid black;
-  max-width: 800px;
+  width: 100%;
 }
 .post-details-img {
   max-height: 80vh;
-  min-height: 70vh;
-  object-fit: contain;
-  object-position: center;
   filter: brightness(70%);
 }
 
@@ -222,8 +226,21 @@ a {
 
 /*Profile page*/
 .user-profile-div {
+  width: 100%;
+  margin: 0 auto;
+}
+.user-profile-details-div {
   width: 100vw;
   max-width: 1600px;
+}
+.posts-btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.delete-account-btn {
+  margin-right: 50%;
 }
 .add-post-btn {
   margin-top: 30px;

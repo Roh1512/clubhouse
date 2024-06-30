@@ -2,12 +2,12 @@ extends layout
 
 block content
     div(class="user-profile-div")
-        div(class="card text-center")
+        div(class="card text-center user-profile-details-div")
             div(class="card-header")
                 | Username: #{user.username}
             div(class="card-body")
                 h5(class="card-title") #{user.firstName} #{user.lastName}
-                a(href="/users/profile/delete" class="btn btn-warning") Delete Account
+                a(href="/users/profile/delete" class="btn btn-warning delete-account-btn btn-sm") Delete Account
             div(class="card-footer text-body-secondary")
                 | Profile created at: #{user.createdAt.toISOString().split('T')[0]}
         hr
@@ -19,6 +19,7 @@ block content
             if posts_by_user.length > 0
                 each post in posts_by_user
                     div(class="card post-card" style="width: 100%;")
+                        a(class="post-card-username" href=post.user.url)= post.user.username
                         if post.imageUrls.length > 0
                             div(id="carouselExampleIndicators" class="carousel slide")
                                 div(class="carousel-indicators")
@@ -52,8 +53,9 @@ block content
                                 button(type="submit" class=isLiked ? 'like-btn like-btn-active' : 'like-btn')
                                     | #{isLiked ? 'Unlike' : 'Like'}
                                 p(class="card-text") #{post.likes.length} Likes
-                            a(href=post.url class="btn btn-primary") View Post
-                            a(href=post.url+"/delete" class="btn btn-danger") Delete Post
+                            div(class="posts-btn-group")
+                                a(href=post.url+"/delete" class="btn btn-danger btn-sm") Delete Post
+                                a(href=post.url class="btn btn-primary btn-lg") View Post
                 div(class="pagination-controls")
                     if currentPage > 1
                         a(href=`?page=${currentPage - 1}&limit=${limit}` class="page-btn prev-page-btn") <-

@@ -248,6 +248,15 @@ exports.profile_get = asyncHandler(async (req, res, next) => {
   const totalPosts = await Post.countDocuments().exec();
   const totalPages = Math.ceil(totalPosts / limit);
 
+  posts_by_user.forEach((post) => {
+    post.imageUrls.forEach((image) => {
+      if (image && image.url) {
+        const transformation = "c_auto,f_auto,q_auto:best";
+        image.url = image.url.replace("/upload/", `/upload/${transformation}/`);
+      }
+    });
+  });
+
   res.render("profile", {
     title: "Profile",
     posts_by_user: posts_by_user.map((post) =>

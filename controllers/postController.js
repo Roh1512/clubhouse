@@ -29,6 +29,15 @@ exports.all_posts_get = asyncHandler(async (req, res, next) => {
   const totalPosts = await Post.countDocuments().exec();
   const totalPages = Math.ceil(totalPosts / limit);
 
+  all_posts.forEach((post) => {
+    post.imageUrls.forEach((image) => {
+      if (image && image.url) {
+        const transformation = "c_auto,f_auto,q_auto:best";
+        image.url = image.url.replace("/upload/", `/upload/${transformation}/`);
+      }
+    });
+  });
+
   res.render("all_posts", {
     title: "All Posts",
     all_posts: all_posts.map((post) => post.toObject({ virtuals: true })),
@@ -95,6 +104,10 @@ exports.post_details_get = asyncHandler(async (req, res, next) => {
     if (!post) {
       return next(new Error("Post not found"));
     }
+    post.imageUrls.forEach((image) => {
+      const transformation = "c_fit,f_auto,q_auto:best";
+      image.url = image.url.replace("/upload/", `/upload/${transformation}/`);
+    });
     // Render the post details view
     res.render("post_details", {
       title: post.title,

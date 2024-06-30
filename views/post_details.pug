@@ -1,8 +1,8 @@
 extends layout 
 
 block content 
-    h1= post.title
     div(class="post-details")
+        h1= post.title
         div(class="card post-details-card")
             if post.imageUrls.length > 0
                 div(id="carouselExampleIndicators" class="carousel slide")

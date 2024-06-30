@@ -2,18 +2,43 @@ extends layout
 
 block content
     div(class="user-profile-div")
-        h1(class="profile-heading") #{userToDisplay.firstName} #{userToDisplay.lastName}
+        div(class="card text-center user-profile-details-div")
+            div(class="card-header")
+                | Username: #{userToDisplay.username}
+            div(class="card-body")
+                h5(class="card-title") #{userToDisplay.firstName} #{userToDisplay.lastName}
+            div(class="card-footer text-body-secondary")
+                | Profile created at: #{userToDisplay.createdAt.toISOString().split('T')[0]}
+        hr
 
-        div(class="user-details-div")
-            p Username: #{userToDisplay.username}
-            p #{userToDisplay.membershipStatus} user 
-            p Profile created at: #{userToDisplay.createdAt.toISOString().split('T')[0]}
+        h3 Posts by #{userToDisplay.username}
         div(class="posts-div")
             if posts_by_user.length > 0
                 each post in posts_by_user
                     div(class="card post-card" style="width: 100%;")
-                        each img in post.imageUrls
-                            img(src=img.url class="card-img-top" alt="Post Image")
+                        a(class="post-card-username" href=post.user.url)= post.user.username
+                        if post.imageUrls.length > 0
+                            div(id="carouselExampleIndicators" class="carousel slide")
+                                div(class="carousel-indicators")
+                                    each img,index in post.imageUrls
+                                        button(
+                                        type="button" 
+                                        data-bs-target="#carouselExampleIndicators" 
+                                        data-bs-slide-to=index 
+                                        class=index === 0 ? 'active' : '' 
+                                        aria-current=index === 0 ? 'true' : 'false'                                             aria-label="Slide " + (index + 1)
+                                    )
+                                div(class="carousel-inner")
+                                    each img, index in post.imageUrls
+                                        div(class="carousel-item " + (index === 0 ? 'active' : ''))
+                                            img(src=img.url class="d-block w-100 card-img-top  post-details-img" alt="Post Image")
+                                if post.imageUrls.length > 1
+                                    button(class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev")
+                                        span(class="carousel-control-prev-icon" aria-hidden="true")
+                                        span(class="visually-hidden") Previous
+                                    button(class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next")
+                                        span(class="carousel-control-next-icon" aria-hidden="true")
+                                        span(class="visually-hidden") Next
                         div(class="card-body")
                             h5(class="card-title")= post.title
                             p(class="card-text")= post.description 

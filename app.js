@@ -38,7 +38,10 @@ app.use(limiter);
 const mongodb_uri = process.env.MONGODB_URI;
 async function main() {
   try {
-    await mongoose.connect(mongodb_uri);
+    await mongoose.connect(mongodb_uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error("MongoDB connection error:", err);
@@ -75,7 +78,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const sessionStore = MongoStore.create({
   mongoUrl: process.env.MONGODB_URI,
   collectionName: "Sessions",
-  ttl: 24 * 60 * 60, // 1 day
+  /* ttl: 24 * 60 * 60, // 1 day */
 });
 app.use(
   session({

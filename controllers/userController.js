@@ -145,8 +145,10 @@ exports.signup_post = [
           membershipStatus: req.body.membershipStatus,
         });
         const result = await user.save();
+        console.log("signUp User", result);
         req.logIn(user, (err) => {
           if (err) {
+            console.log("Login Error from signup-post: ", err);
             return next(err);
           }
           res.redirect("/");
@@ -194,6 +196,7 @@ exports.login_post = [
     }
     passport.authenticate("local", (err, user, info) => {
       if (err) {
+        console.log("Login Auth ", err);
         next(err);
       }
       if (!user) {
@@ -204,6 +207,7 @@ exports.login_post = [
       }
       req.logIn(user, (err) => {
         if (err) {
+          console.log("req.logIn() ", err);
           return next(err);
         }
         return res.redirect("/");

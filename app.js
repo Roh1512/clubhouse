@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const favicon = require("serve-favicon");
 const passport = require("passport");
+const compression = require("compression");
+const helmet = require("helmet");
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -24,6 +26,15 @@ const postsRouter = require("./routes/posts");
 
 const app = express();
 
+// Set up rate limiter: maximum of twenty requests per minute
+const RateLimit = require("express-rate-limit");
+const limiter = RateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 40,
+});
+// Apply rate limiter to all requests
+app.use(limiter);
+
 const mongodb_uri = process.env.MONGODB_URI;
 async function main() {
   try {
@@ -36,6 +47,19 @@ async function main() {
 
 main();
 
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+      imgSrc: [
+        "'self'", // Allow images from the same origin
+        "https://res.cloudinary.com", // Allow images from Cloudinary
+        "data:", // Allow data URIs for images
+      ],
+    },
+  })
+);
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
@@ -44,6 +68,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(compression()); // Compress all routes
 app.use(express.static(path.join(__dirname, "public")));
 
 //Session store setup

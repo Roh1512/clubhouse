@@ -10,7 +10,8 @@ block content
                 input(type="textarea" class="form-control" name="description" id="description" placeholder="Title of the post" style="height: 100px")
                 label(for="description") Description
             div(class="form-group")
-                input(type="file" name="images" id="images" multiple accept="image/*")
+                input(type="file" class="form-control" name="images" id="images" multiple accept="image/*")
                 label(for="images") Upload Images
             input#user.form-control(type="hidden", name="user", value=user._id)
-            button(type="submit" class="btn btn-primary") Post
+            br
+            button(type="submit" class="btn btn-info btn-lg") Post

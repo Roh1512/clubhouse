@@ -63,7 +63,7 @@ exports.userdetails_get = asyncHandler(async (req, res, next) => {
 exports.signup_get = asyncHandler(async (req, res, next) => {
   res.render("signup_form", {
     title: "Sign Up",
-    errors: [{ msg: "Some error" }],
+    errors: [],
   });
 });
 exports.signup_post = [
@@ -148,7 +148,6 @@ exports.signup_post = [
         console.log("signUp User", result);
         req.logIn(user, (err) => {
           if (err) {
-            console.log("Login Error from signup-post: ", err);
             return next(err);
           }
           res.redirect("/");
@@ -196,7 +195,6 @@ exports.login_post = [
     }
     passport.authenticate("local", (err, user, info) => {
       if (err) {
-        console.log("Login Auth ", err);
         next(err);
       }
       if (!user) {
@@ -207,7 +205,6 @@ exports.login_post = [
       }
       req.logIn(user, (err) => {
         if (err) {
-          console.log("req.logIn() ", err);
           return next(err);
         }
         return res.redirect("/");

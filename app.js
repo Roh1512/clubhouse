@@ -26,8 +26,6 @@ const postsRouter = require("./routes/posts");
 
 const app = express();
 
-console.log("NODE_ENV:", process.env.NODE_ENV);
-console.log("Secure flag:", process.env.NODE_ENV === "production");
 app.set("trust proxy", 1);
 
 // Set up rate limiter: maximum of twenty requests per minute
@@ -40,10 +38,7 @@ const limiter = RateLimit({
 const mongodb_uri = process.env.MONGODB_URI;
 async function main() {
   try {
-    await mongoose.connect(mongodb_uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(mongodb_uri);
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error("MongoDB connection error:", err);
@@ -82,7 +77,7 @@ app.use(express.static(path.join(__dirname, "public")));
 const sessionStore = MongoStore.create({
   mongoUrl: process.env.MONGODB_URI,
   collectionName: "Sessions",
-  /* ttl: 24 * 60 * 60, // 1 day */
+  ttl: 24 * 60 * 60, // 1 day
 });
 app.use(
   session({
@@ -107,12 +102,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);
   console.log("User:", req.user);
   next();
-});
+}); */
 
 // Serve favicon
 app.use(favicon(path.join(__dirname, "public", "images", "logoicon.svg")));

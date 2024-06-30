@@ -101,9 +101,9 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  console.log(req.session);
-  console.log(`User: \n${req.user}\n----`);
-  next();
+  console.log("Session ID:", req.sessionID);
+  console.log("Session:", req.session);
+  console.log("User:", req.user);
 });
 
 // Serve favicon

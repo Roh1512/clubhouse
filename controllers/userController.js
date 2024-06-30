@@ -45,7 +45,6 @@ exports.userdetails_get = asyncHandler(async (req, res, next) => {
       populate: { path: "user", select: "_id" },
     })
     .exec();
-  console.log(posts_by_user);
   const totalPosts = await Post.countDocuments({ user: req.params.id }).exec();
   const totalPages = Math.ceil(totalPosts / limit);
   // Format the createdAt date to a human-readable format
@@ -146,7 +145,6 @@ exports.signup_post = [
           membershipStatus: req.body.membershipStatus,
         });
         const result = await user.save();
-        console.log(`User Registered.\n${result}`);
         req.logIn(user, (err) => {
           if (err) {
             return next(err);

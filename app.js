@@ -100,11 +100,11 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   console.log(req.session);
   console.log(`User: \n${req.user}\n----`);
   next();
-});
+}); */
 
 // Serve favicon
 app.use(favicon(path.join(__dirname, "public", "images", "logoicon.svg")));

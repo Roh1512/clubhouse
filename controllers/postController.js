@@ -141,8 +141,6 @@ exports.add_post_post = [
     }
 
     const imageUrls = [];
-
-    console.log("Received files:", req.files);
     for (const file of req.files) {
       try {
         const result = await new Promise((resolve, reject) => {
@@ -165,7 +163,6 @@ exports.add_post_post = [
         return res.status(500).json({ message: "Failed to upload images." });
       }
     }
-    console.log(imageUrls);
     const newPost = new Post({
       title: req.body.title,
       description: req.body.description,

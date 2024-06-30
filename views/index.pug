@@ -2,13 +2,15 @@ extends layout
 
 block content
   div(class="homepage-div")
-    if user
+    if !user
       div(class="hero-div")
         img(src="/images/logoicon.svg" class="hero-img img-fluid")
         h1(class="hero-title")= title 
         figure
           blockquote(class="blockquote")
             p(class="mb-0 hero-text") Be Seen. Be Heard. Be You.
-    else 
-      h1 Please sign up
+        div(class="btn-group")
+          a(class="btn btn-primary login-btn btn-lg" href="/users/login") Login
+          a(class="btn btn-success signup-btn btn-lg" href="/users/signup") Sign up
+          
 

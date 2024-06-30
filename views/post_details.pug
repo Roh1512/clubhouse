@@ -1,0 +1,72 @@
+extends layout 
+
+block content 
+    h1= post.title
+    div(class="post-details")
+        div(class="card post-details-card")
+            if post.imageUrls.length > 0
+                div(id="carouselExampleIndicators" class="carousel slide")
+                    div(class="carousel-indicators")
+                        each img,index in post.imageUrls
+                            button(
+                                    type="button" 
+                                    data-bs-target="#carouselExampleIndicators" 
+                                    data-bs-slide-to=index 
+                                    class=index === 0 ? 'active' : '' 
+                                    aria-current=index === 0 ? 'true' : 'false' 
+                                    aria-label="Slide " + (index + 1)
+                                )
+                    div(class="carousel-inner")
+                        each img, index in post.imageUrls
+                            div(class="carousel-item " + (index === 0 ? 'active' : ''))
+                                img(src=img.url class="d-block w-100 card-img-top  post-details-img" alt="Post Image")
+                    if post.imageUrls.length > 1
+                        button(class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev")
+                            span(class="carousel-control-prev-icon" aria-hidden="true")
+                            span(class="visually-hidden") Previous
+                        button(class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next")
+                            span(class="carousel-control-next-icon" aria-hidden="true")
+                            span(class="visually-hidden") Next
+            div(class="card-body")
+                h3(class="card-title")= post.title
+                h5(class="card-text")= post.description
+                p(class="card-text") Created by: #{post.user.username} on #{post.createdAt.toISOString().split('T')[0]}
+        
+                if user
+                    form(action=`/posts/${post._id}/like?redirect_from=post_details` method="POST" class="like-btn-div")
+                        - const isLiked = post.likes.some(like => like.user._id.toString() === user._id.toString())
+                        button(type="submit" class=isLiked ? 'like-btn like-btn-active' : 'like-btn')
+                            | #{isLiked ? 'Unlike' : 'Like'}
+                        p(class="card-text") #{post.likes.length} Likes
+
+        form(action=`/posts/${post._id}/addcomment` method="POST" class="comment-form")
+            div(class="mb-3")
+                textarea(class="form-control" id="add-comment" rows="3" name="comment")
+            if errors
+                for error in errors
+                    div(class="alert alert-warning alert-dismissible fade show error-alert-div" role="alert")
+                        p= error.msg
+                        button(type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close")
+            button(type="submit" class="btn btn-info") Add Comment
+        h2 #{post.comments.length} Comments
+        if post.comments.length > 0
+            each comment in post.comments
+                div(class="comment-div card text-center")
+                    div(class="card-header")
+                        a(class="comment-btn"  href=comment.user.url) #{comment.user.username}
+                    div("card-body")
+                        p(class="card-text")= comment.content
+                    div(class="card-footer text-body-secondary")
+                        p(class="card-title") Posted on: #{comment.createdAt.toISOString().split('T')[0]}
+                    if user && user._id.toString() === comment.user._id.toString()
+                        div.form-group
+                            form(method="POST" action=`/posts/${post._id}/comments/${comment._id}/delete`)
+                                input#commentId.form-control(type='hidden', name='comment', value=comment._id)
+                                button.btn.btn-danger(type='submit') Delete Comment
+                    if errors
+                        for error in errors
+                            div(class="alert alert-warning alert-dismissible fade show error-alert-div" role="alert")
+                                p= error.msg
+                                button(type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close")
+        else
+            p No comments yet.

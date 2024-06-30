@@ -5,7 +5,7 @@ const PostSchema = new Schema({
   title: { type: String, maxLength: 200 },
   description: { type: String, maxLength: 1000 },
   createdAt: { type: Date, default: Date.now() },
-  imageUrls: [{ type: String }],
+  imageUrls: [{ url: { type: String }, public_id: { type: String } }],
   user: { type: Schema.Types.ObjectId, ref: "Users", required: true },
   likes: [{ type: Schema.Types.ObjectId, ref: "Likes" }],
   comments: [{ type: Schema.Types.ObjectId, ref: "Comments" }],

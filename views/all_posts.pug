@@ -1,0 +1,47 @@
+extends layout 
+block content 
+    h1= title
+    div(class="posts-div")
+        if all_posts.length > 0
+            each post in all_posts
+                div(class="card post-card" style="width: 100%;")
+                    div(id="carouselExampleIndicators" class="carousel slide")
+                        div(class="carousel-indicators")
+                            each img,index in post.imageUrls
+                                button(
+                                    type="button" 
+                                    data-bs-target="#carouselExampleIndicators" 
+                                    data-bs-slide-to=index 
+                                    class=index === 0 ? 'active' : '' 
+                                    aria-current=index === 0 ? 'true' : 'false' 
+                                    aria-label="Slide " + (index + 1)
+                                )
+                        div(class="carousel-inner")
+                            each img, index in post.imageUrls
+                                div(class="carousel-item " + (index === 0 ? 'active' : ''))
+                                    img(src=img.url class="d-block w-100 card-img-top post-img" alt="Post Image")
+                        if post.imageUrls.length > 1
+                            button(class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev")
+                                span(class="carousel-control-prev-icon" aria-hidden="true")
+                                span(class="visually-hidden") Previous
+                            button(class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next")
+                                span(class="carousel-control-next-icon" aria-hidden="true")
+                                span(class="visually-hidden") Next
+                    div(class="card-body")
+                        h5(class="card-title")= post.title
+                        p(class="card-text")= post.description 
+                        p(class="card-text") Created by: #{post.user.username} on #{post.createdAt.toISOString().split('T')[0]}
+                        p(class="card-text") Comments: #{post.comments.length}
+                        form(action=`/posts/${post._id}/like?page=${currentPage}&limit=${limit}` method="POST" class="like-btn-div")
+                            - const isLiked = user && post.likes && post.likes.some(like => like.user && like.user._id.toString() === user._id.toString())
+                            button(type="submit" class=isLiked ? 'like-btn like-btn-active' : 'like-btn')
+                                | #{isLiked ? 'Unlike' : 'Like'}
+                            p(class="card-text") #{post.likes.length} Likes
+                        a(href=post.url class="btn btn-primary") View Post
+            div(class="pagination-controls")
+                if currentPage > 1
+                    a(href=`?page=${currentPage - 1}&limit=${limit}` class="page-btn prev-page-btn") <-
+                if currentPage < totalPages 
+                    a(href=`?page=${currentPage + 1}&limit=${limit}` class="page-btn next-page-btn") ->
+        else 
+            p There are no posts

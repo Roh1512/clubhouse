@@ -9,7 +9,7 @@ block content
     div(class="allusers-div")
         if all_users.length 
             each user in all_users 
-                div(class="card")
+                div(class="card user-card")
                     div(class="card-header")= user.username
                     div(class="card-body")
                         h5(class="card-title")= user.fullName

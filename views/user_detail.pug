@@ -7,4 +7,28 @@ block content
         div(class="user-details-div")
             p Username: #{userToDisplay.username}
             p #{userToDisplay.membershipStatus} user 
-            p Profile created at: #{userToDisplay.createdAt}
+            p Profile created at: #{userToDisplay.createdAt.toISOString().split('T')[0]}
+        div(class="posts-div")
+            if posts_by_user.length > 0
+                each post in posts_by_user
+                    div(class="card post-card" style="width: 100%;")
+                        each img in post.imageUrls
+                            img(src=img.url class="card-img-top" alt="Post Image")
+                        div(class="card-body")
+                            h5(class="card-title")= post.title
+                            p(class="card-text")= post.description 
+                            p(class="card-text") Created by: #{post.user.username} on #{post.createdAt.toISOString().split('T')[0]}
+                            p(class="card-text") Comments: #{post.comments.length}
+                            form(action=`/posts/${post._id}/like?redirect_from=user_details&user_id=${userToDisplay._id}&page=${currentPage}&limit=${limit}` method="POST" class="like-btn-div")
+                                - const isLiked = user && post.likes && post.likes.some(like => like.user && like.user._id.toString() === user._id.toString())
+                                button(type="submit" class=isLiked ? 'like-btn like-btn-active' : 'like-btn')
+                                    | #{isLiked ? 'Unlike' : 'Like'}
+                                p(class="card-text") #{post.likes.length} Likes
+                            a(href=post.url class="btn btn-primary") View Post
+                div(class="pagination-controls")
+                    if currentPage > 1
+                        a(href=`?page=${currentPage - 1}&limit=${limit}` class="page-btn prev-page-btn") <-
+                    if currentPage < totalPages 
+                        a(href=`?page=${currentPage + 1}&limit=${limit}` class="page-btn next-page-btn") ->
+            else 
+                p There are no posts

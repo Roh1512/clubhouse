@@ -4,6 +4,11 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 
 const User = require("../models/user");
+const Post = require("../models/post");
+const Like = require("../models/like");
+const Comment = require("../models/comment");
+
+const { cloudinary, upload } = require("../config/cloudinaryConfig");
 
 //get all users
 exports.allusers_get = asyncHandler(async (req, res, next) => {
@@ -27,12 +32,31 @@ exports.allusers_get = asyncHandler(async (req, res, next) => {
 exports.userdetails_get = asyncHandler(async (req, res, next) => {
   const userId = req.params.id;
   const user = await User.findById(userId).exec();
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 2;
+
+  const posts_by_user = await Post.find({ user: req.params.id })
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit) // Skip the appropriate number of posts for pagination
+    .limit(limit) // Limit the number of posts returned
+    .populate("user", "username")
+    .populate({
+      path: "likes",
+      populate: { path: "user", select: "_id" },
+    })
+    .exec();
+  console.log(posts_by_user);
+  const totalPosts = await Post.countDocuments({ user: req.params.id }).exec();
+  const totalPages = Math.ceil(totalPosts / limit);
   // Format the createdAt date to a human-readable format
-  const userObject = user.toObject();
-  userObject.createdAt = user.createdAt.toISOString().split("T")[0];
   res.render("user_detail", {
-    title: userObject.username,
-    userToDisplay: userObject,
+    title: user.username,
+    userToDisplay: user,
+    posts_by_user: posts_by_user.map((post) =>
+      post.toObject({ virtuals: true })
+    ),
+    currentPage: page,
+    totalPages: totalPages,
   });
 });
 
@@ -123,7 +147,12 @@ exports.signup_post = [
         });
         const result = await user.save();
         console.log(`User Registered.\n${result}`);
-        res.redirect("/");
+        req.logIn(user, (err) => {
+          if (err) {
+            return next(err);
+          }
+          res.redirect("/");
+        });
       });
     }
   }),
@@ -132,7 +161,7 @@ exports.signup_post = [
 //Login controller
 exports.login_get = asyncHandler(async (req, res, next) => {
   if (req.user) {
-    res.render("loginError", (title = "Logged in"));
+    res.redirect("/");
     return;
   } else {
     res.render("login_form", {
@@ -198,14 +227,92 @@ exports.logout_get = asyncHandler(async (req, res, next) => {
 //profile
 exports.profile_get = asyncHandler(async (req, res, next) => {
   if (!req.user) {
-    req.redirect("/users/login");
+    res.redirect("/loginerror");
+    return;
   }
-  // Format the createdAt date to a human-readable format
-  const user = req.user.toObject();
-  user.createdAt = user.createdAt.toISOString().split("T")[0];
+
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const posts_by_user = await Post.find({ user: req.user.id })
+    .sort({ createdAt: -1 })
+    .skip((page - 1) * limit) // Skip the appropriate number of posts for pagination
+    .limit(limit) // Limit the number of posts returned
+    .populate("user", "username")
+    .populate({
+      path: "likes",
+      populate: { path: "user", select: "_id" },
+    })
+    .exec();
+
+  const totalPosts = await Post.countDocuments().exec();
+  const totalPages = Math.ceil(totalPosts / limit);
 
   res.render("profile", {
     title: "Profile",
-    user,
+    posts_by_user: posts_by_user.map((post) =>
+      post.toObject({ virtuals: true })
+    ),
+    currentPage: page,
+    totalPages: totalPages,
+    user: req.user,
+  });
+});
+exports.delete_user_get = asyncHandler(async (req, res, next) => {
+  res.render("profile_delete_form", {
+    title: "Delete Profile",
+  });
+});
+exports.delete_user_post = asyncHandler(async (req, res, next) => {
+  const userId = req.user._id;
+
+  const userPosts = await Post.find({ user: userId });
+
+  // Find all posts by the user and delete them
+  for (const post of userPosts) {
+    // Delete all likes related to the post
+    for (const like of post.likes) {
+      await Like.findByIdAndDelete(like);
+    }
+    //Delete all comments related to the post
+    for (const comment of post.comments) {
+      await Comment.findByIdAndDelete(comment);
+    }
+    //Delete all post images from cloudinary
+    if (post.imageUrls.length > 0) {
+      for (const image of post.imageUrls) {
+        await cloudinary.uploader.destroy(image.public_id);
+      }
+    }
+    // Delete the post itself
+    await Post.findByIdAndDelete(post._id);
+  }
+
+  // Find and delete all comments made by the user
+  const userComments = await Comment.find({ user: userId });
+  for (const comment of userComments) {
+    // Find the post containing the comment and remove it from the post's comments array
+    const post = await Post.findOne({ comments: comment._id });
+    if (post) {
+      post.comments = post.comments.filter(
+        (id) => id.toString() !== comment._id.toString()
+      );
+      await post.save();
+    }
+    // Delete the comment itself
+    await Comment.findByIdAndDelete(comment._id);
+  }
+  // Find and delete all likes made by the user
+  await Like.deleteMany({ user: userId });
+
+  // Finally, delete the user
+  await User.findByIdAndDelete(userId);
+  // Log out the user
+  req.logout((err) => {
+    if (err) {
+      return next(err);
+    }
+    // Redirect to the home page or a specific route after logout
+    res.redirect("/");
   });
 });

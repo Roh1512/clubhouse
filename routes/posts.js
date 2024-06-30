@@ -1,25 +1,34 @@
 const express = require("express");
 const router = express.Router();
 
-//All posts page
-router.get("/", (req, res, next) => {
-  res.send("Posts page");
-});
+const { isAuthenticated } = require("../middleware/auth");
 
-//Single post page
-router.get("/:id", (req, res, next) => {
-  res.send(`Post ${req.params.id}'s page`);
-});
+const postController = require("../controllers/postController");
+
+//All posts page
+router.get("/", isAuthenticated, postController.all_posts_get);
+
+// Like a post
+router.post("/:id/like", isAuthenticated, postController.like_post);
 
 //Post add get
-router.get("/create", (req, res, next) => {
-  res.send("Form to create post");
-});
+router.get("/create", isAuthenticated, postController.add_post_get);
+//Post add post
+router.post("/create", isAuthenticated, postController.add_post_post);
 
 //Post add POST
 router.post("/create", (req, res, next) => {
   res.send("Form to create post (POST)");
 });
+
+//Single post page
+router.get("/:id", isAuthenticated, postController.post_details_get);
+
+router.post(
+  "/:id/addcomment",
+  isAuthenticated,
+  postController.add_comment_post
+);
 
 //Post update get
 router.get("/:id/update", (req, res, next) => {
@@ -32,13 +41,15 @@ router.post("/:id/update", (req, res, next) => {
 });
 
 //Post delete get
-router.get("/:id/delete", (req, res, next) => {
-  res.send(`Form to delete post: ${req.params.id}`);
-});
+router.get("/:id/delete", isAuthenticated, postController.delete_post_get);
 
 //Post delete POST
-router.post("/:id/delete", (req, res, next) => {
-  res.send(`Form to delete post: ${req.params.id} POST`);
-});
+router.post("/:id/delete", isAuthenticated, postController.delete_post_post);
+
+router.post(
+  "/:id/comments/:commentid/delete",
+  isAuthenticated,
+  postController.delete_comment_post
+);
 
 module.exports = router;

@@ -8,18 +8,18 @@ const strategy = new LocalStrategy(async (username, password, done) => {
   try {
     const user = await User.findOne({ username });
     if (!user) {
-      /* console.log("Incorrect Username"); */
+      console.log("Incorrect Username");
       return done(null, false, { message: "Incorrect Username" });
     }
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      /* console.log("Incorrect Password"); */
+      console.log("Incorrect Password");
       return done(null, false, { message: "Incorrect Password" });
     }
     console.log("Authentication successful");
     return done(null, user);
   } catch (error) {
-    /* console.log("Error in strategy:", error); */
+    console.log("Error in strategy:", error);
     return done(error);
   }
 });

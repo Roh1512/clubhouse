@@ -7,6 +7,7 @@ const favicon = require("serve-favicon");
 const passport = require("passport");
 const compression = require("compression");
 const helmet = require("helmet");
+const cors = require("cors");
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -26,13 +27,21 @@ const postsRouter = require("./routes/posts");
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
+app.options("*");
+
 app.set("trust proxy", 1);
 
 // Set up rate limiter: maximum of twenty requests per minute
 const RateLimit = require("express-rate-limit");
 const limiter = RateLimit({
   windowMs: 1 * 60 * 1000, // 1 minute
-  max: 40,
+  max: 400,
 });
 
 const mongodb_uri = process.env.MONGODB_URI;
@@ -63,8 +72,8 @@ app.use(
 );
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+/* app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "pug"); */
 
 app.use(logger("dev"));
 app.use(express.json());
@@ -98,7 +107,10 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use((req, res, next) => {
-  res.locals.user = req.user;
+  if (req.user) {
+    const { password, ...sanitizedUser } = req.user._doc || req.user; // Use _doc for Mongoose models
+    res.locals.user = sanitizedUser;
+  }
   next();
 });
 
@@ -128,8 +140,10 @@ app.use(function (err, req, res, next) {
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
   // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+  return res.status(err.status || 500).json({
+    success: false,
+    message: err.message,
+  });
 });
 
 module.exports = app;

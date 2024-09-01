@@ -22,4 +22,6 @@ UserScheme.virtual("url").get(function () {
   return `/users/${this._id}`;
 });
 
+UserScheme.index({ createdAt: -1, _id: 1, username: 1 });
+
 module.exports = mongoose.model("Users", UserScheme);

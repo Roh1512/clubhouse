@@ -8,4 +8,6 @@ const CommentSchema = new Schema({
   createdAt: { type: Date, default: Date.now() },
 });
 
+CommentSchema.index({ createdAt: -1, _id: 1 });
+
 module.exports = mongoose.model("Comments", CommentSchema);

@@ -27,8 +27,9 @@ const strategy = new LocalStrategy(async (username, password, done) => {
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
-  /* console.log("Serialize User:", user); */
-  done(null, user._id);
+  console.log("Serialize User:", user);
+  const { password, ...sanitizedUser } = user._doc || user;
+  done(null, sanitizedUser._id);
 });
 
 passport.deserializeUser(async (id, done) => {
@@ -40,7 +41,8 @@ passport.deserializeUser(async (id, done) => {
       return done(null, false); // or handle as needed
     }
     /* console.log("Deserialized user:", user); */
-    done(null, user);
+    const { password, ...sanitizedUser } = user._doc || user;
+    done(null, sanitizedUser);
   } catch (error) {
     console.error("Error in deserializeUser:", error);
     done(error);

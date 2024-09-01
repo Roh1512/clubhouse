@@ -15,4 +15,6 @@ PostSchema.virtual("url").get(function () {
   return `/posts/${this._id}`;
 });
 
+PostSchema.index({ createdAt: -1, _id: 1 }); // Compound index
+
 module.exports = mongoose.model("Posts", PostSchema);

@@ -97,6 +97,7 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
     },
   })
 );

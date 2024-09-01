@@ -16,7 +16,7 @@ const strategy = new LocalStrategy(async (username, password, done) => {
       // console.log("Incorrect Password");
       return done(null, false, { message: "Incorrect Password" });
     }
-    // console.log("Authentication successful");
+    console.log("Authentication successful");
     return done(null, user);
   } catch (error) {
     console.log("Error in strategy:", error);
@@ -27,20 +27,20 @@ const strategy = new LocalStrategy(async (username, password, done) => {
 passport.use(strategy);
 
 passport.serializeUser((user, done) => {
-  // console.log("Serialize User:", user);
+  console.log("Serialize User:", user);
   const { password, ...sanitizedUser } = user._doc || user;
   done(null, sanitizedUser._id);
 });
 
 passport.deserializeUser(async (id, done) => {
-  /* console.log("Deserializing user with ID:", id); */
+  console.log("Deserializing user with ID:", id);
   try {
     const user = await User.findById(id).exec();
     if (!user) {
-      /* console.log("User not found in deserializeUser"); */
+      console.log("User not found in deserializeUser");
       return done(null, false); // or handle as needed
     }
-    /* console.log("Deserialized user:", user); */
+    console.log("Deserialized user:", user);
     const { password, ...sanitizedUser } = user._doc || user;
     done(null, sanitizedUser);
   } catch (error) {

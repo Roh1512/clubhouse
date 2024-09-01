@@ -114,12 +114,12 @@ app.use((req, res, next) => {
   next();
 });
 
-/* app.use((req, res, next) => {
+app.use((req, res, next) => {
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);
   console.log("User:", req.user);
   next();
-}); */
+});
 
 // Serve favicon
 app.use(favicon(path.join(__dirname, "public", "images", "logoicon.svg")));

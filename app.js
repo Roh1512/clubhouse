@@ -30,10 +30,10 @@ const app = express();
 app.use(
   cors({
     origin: process.env.CLIENT_URL,
-    credentials: true, // Important for sending cookies
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
   })
 );
+app.options("*");
 
 app.set("trust proxy", 1);
 
@@ -97,10 +97,6 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       secure: process.env.NODE_ENV === "production",
-      httpOnly: true,
-      sameSite: "None",
-      domain: process.env.COOKIE_DOMAIN || undefined, // Set if needed
-      path: "/", // Ensure the path is correct
     },
   })
 );
@@ -119,7 +115,6 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  console.log("Cookies: ", req.cookies);
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);
   console.log("User:", req.user);
@@ -129,11 +124,7 @@ app.use((req, res, next) => {
 // Serve favicon
 app.use(favicon(path.join(__dirname, "public", "images", "logoicon.svg")));
 
-// app.use("/", indexRouter);
-app.get("/", (req, res) => {
-  res.cookie("testCookie", "testValue");
-  res.json("Cookie set!");
-});
+app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 

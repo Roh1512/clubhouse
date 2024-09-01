@@ -263,9 +263,6 @@ exports.login_post = [
         }
         // return res.redirect("/");
         const { password, ...sanitizedUser } = req.user._doc || req.user;
-        res.cookie("id", "user", {
-          httpOnly: true,
-        });
         return res.status(200).json({
           msg: "Login successfull",
           user: sanitizedUser,

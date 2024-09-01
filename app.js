@@ -58,7 +58,7 @@ main();
 
 // Apply rate limiter to all requests
 app.use(limiter);
-/* app.use(
+app.use(
   helmet.contentSecurityPolicy({
     directives: {
       "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
@@ -69,7 +69,7 @@ app.use(limiter);
       ],
     },
   })
-); */
+);
 
 // view engine setup
 /* app.set("views", path.join(__dirname, "views"));

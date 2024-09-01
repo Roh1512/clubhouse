@@ -128,7 +128,11 @@ app.use((req, res, next) => {
 // Serve favicon
 app.use(favicon(path.join(__dirname, "public", "images", "logoicon.svg")));
 
-app.use("/", indexRouter);
+// app.use("/", indexRouter);
+app.get("/", (req, res) => {
+  res.cookie("testCookie", "testValue");
+  res.json("Cookie set!");
+});
 app.use("/users", usersRouter);
 app.use("/posts", postsRouter);
 

@@ -58,7 +58,7 @@ main();
 
 // Apply rate limiter to all requests
 app.use(limiter);
-app.use(
+/* app.use(
   helmet.contentSecurityPolicy({
     directives: {
       "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
@@ -69,7 +69,7 @@ app.use(
       ],
     },
   })
-);
+); */
 
 // view engine setup
 /* app.set("views", path.join(__dirname, "views"));
@@ -115,6 +115,8 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  console.log("Cookies: ", req.cookies);
+
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);
   console.log("User:", req.user);

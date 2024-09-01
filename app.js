@@ -33,7 +33,7 @@ app.use(
     credentials: true,
   })
 );
-// app.options("*");
+app.options("*");
 
 app.set("trust proxy", 1);
 

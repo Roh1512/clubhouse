@@ -119,8 +119,6 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
-  console.log("Req: ", req);
-
   console.log("Cookies: ", req.cookies);
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);

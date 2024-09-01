@@ -97,7 +97,9 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
+      sameSite: "None", // Needed for cross-origin requests
+      domain: process.env.COOKIE_DOMAIN || undefined, // Correct domain for cross-subdomain use
+      path: "/", // Ensure the path is correct
     },
   })
 );

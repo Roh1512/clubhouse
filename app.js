@@ -33,7 +33,7 @@ app.use(
     credentials: true,
   })
 );
-app.options("*");
+// app.options("*");
 
 app.set("trust proxy", 1);
 
@@ -59,15 +59,19 @@ main();
 // Apply rate limiter to all requests
 app.use(limiter);
 app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
-      imgSrc: [
-        "'self'", // Allow images from the same origin
-        "https://res.cloudinary.com", // Allow images from Cloudinary
-        "data:", // Allow data URIs for images
-      ],
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        "script-src": ["'self'", "code.jquery.com", "cdn.jsdelivr.net"],
+        imgSrc: [
+          "'self'", // Allow images from the same origin
+          "https://res.cloudinary.com", // Allow images from Cloudinary
+          "data:", // Allow data URIs for images
+        ],
+      },
     },
+    noSniff: true, // Set X-Content-Type-Options to 'nosniff'
+    xssFilter: true, // Adds some small XSS protections
   })
 );
 

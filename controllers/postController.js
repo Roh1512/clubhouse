@@ -12,7 +12,6 @@ const Comment = require("../models/comment"); // Import Comment model
 exports.all_posts_by_current_user = asyncHandler(async (req, res) => {
   const user = req.user;
   const userId = user._id;
-  console.log(userId);
 
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 5;
@@ -51,7 +50,6 @@ exports.all_posts_by_current_user = asyncHandler(async (req, res) => {
 
 exports.all_Posts_by_userid = asyncHandler(async (req, res, next) => {
   const userId = req.params.userid;
-  console.log(userId);
 
   const page = parseInt(req.query.page) || 1;
   const limit = parseInt(req.query.limit) || 15;
@@ -144,15 +142,6 @@ exports.get_comments_by_post = asyncHandler(async (req, res) => {
     .limit(limit) // Limit the number of posts returned
     .populate({ path: "user", select: ["_id", "username"] })
     .exec();
-  console.log(
-    "Fetching comments for post:",
-    postId,
-    "page:",
-    page,
-    "limit:",
-    limit
-  );
-  console.log("Fetched comments:", all_comments);
 
   return res.json(all_comments);
 });
@@ -284,7 +273,6 @@ exports.add_post_post = [
 
     try {
       const result = await newPost.save();
-      console.log(result);
 
       const populatedPost = await Post.findById(newPost._id)
         .populate("user", "username")
@@ -295,8 +283,6 @@ exports.add_post_post = [
           options: { sort: { createdAt: -1 } }, // Sort comments by date, descending
         })
         .exec();
-
-      console.log("Populated Post: ", populatedPost);
 
       return res.status(200).json({ populatedPost });
     } catch (error) {

@@ -19,7 +19,6 @@ exports.allusers_get = asyncHandler(async (req, res, next) => {
   let query = {};
   if (searchQuery) {
     const regex = new RegExp(`^${searchQuery}`, "i"); // 'i' for case-insensitive
-    console.log(regex);
 
     query = {
       $or: [{ username: regex }, { firstName: regex }],
@@ -144,7 +143,6 @@ exports.signup_post = [
             membershipStatus: req.body.membershipStatus,
           });
           const result = await user.save();
-          console.log("signUp User: ", result);
           req.logIn(user, (err) => {
             if (err) {
               return next(err);
@@ -355,7 +353,6 @@ exports.profile_get = asyncHandler(async (req, res, next) => {
 exports.delete_user_post = asyncHandler(async (req, res, next) => {
   const userId = req.user._id;
   const password = req.body.password || "";
-  console.log(password);
 
   const user = await User.findById(userId);
 

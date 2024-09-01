@@ -38,13 +38,13 @@ passport.deserializeUser(async (id, done) => {
     const user = await User.findById(id).exec();
     if (!user) {
       console.log("User not found in deserializeUser");
-      return done(null, false); // or handle as needed
+      return done(null, false);
     }
     console.log("Deserialized user:", user);
     const { password, ...sanitizedUser } = user._doc || user;
     done(null, sanitizedUser);
   } catch (error) {
-    // console.error("Error in deserializeUser:", error);
+    console.error("Error in deserializeUser:", error);
     done(error);
   }
 });

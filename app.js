@@ -31,11 +31,10 @@ app.use(
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
 
-// app.set("trust proxy", 1);
+app.set("trust proxy", 1);
 
 // Set up rate limiter: maximum of twenty requests per minute
 const RateLimit = require("express-rate-limit");
@@ -96,9 +95,9 @@ app.use(
     store: sessionStore,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
-      secure: process.env.NODE_ENV === "production",
+      secure: false,
       httpOnly: true,
-      sameSite: "None",
+      sameSite: "none",
     },
   })
 );

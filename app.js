@@ -97,6 +97,9 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       secure: process.env.NODE_ENV === "production",
       httpOnly: true,
+      sameSite: "None",
+      domain: process.env.COOKIE_DOMAIN || undefined, // Set if needed
+      path: "/", // Ensure the path is correct
     },
   })
 );
@@ -115,6 +118,7 @@ app.use((req, res, next) => {
 });
 
 app.use((req, res, next) => {
+  console.log("Cookies: ", req.cookies);
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);
   console.log("User:", req.user);

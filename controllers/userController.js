@@ -257,6 +257,8 @@ exports.login_post = [
       req.logIn(user, (err) => {
         if (err) {
           // return next(err);
+          console.log(err);
+
           return res.status(500).json({ errors: [{ msg: "Login failed" }] });
         }
         // return res.redirect("/");

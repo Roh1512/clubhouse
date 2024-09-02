@@ -8,8 +8,6 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
-    },
-    "typeRoots": ["node_modules/@types"],
-    "types": ["vite/client", "@types/vite", "@types/vitejs__plugin-react"]
+    }
   }
 }

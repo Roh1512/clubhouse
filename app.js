@@ -7,7 +7,6 @@ const favicon = require("serve-favicon");
 const passport = require("passport");
 const compression = require("compression");
 const helmet = require("helmet");
-const cors = require("cors");
 
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -27,7 +26,9 @@ const postsRouter = require("./routes/posts");
 
 const app = express();
 
-app.use(
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+/* app.use(
   cors({
     origin: process.env.CLIENT_URL,
     credentials: true,
@@ -35,7 +36,7 @@ app.use(
 );
 app.options("*");
 
-app.set("trust proxy", 1);
+app.set("trust proxy", 1); */
 
 // Set up rate limiter: maximum of twenty requests per minute
 const RateLimit = require("express-rate-limit");
@@ -49,6 +50,7 @@ async function main() {
   try {
     await mongoose.connect(mongodb_uri);
     console.log("Connected to MongoDB");
+    console.log(__dirname);
   } catch (err) {
     console.error("MongoDB connection error:", err);
   }
@@ -97,9 +99,10 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
       secure: process.env.NODE_ENV === "production",
-      sameSite: "None", // Needed for cross-origin requests
+      httpOnly: true,
+      /* sameSite: "None", // Needed for cross-origin requests
       domain: process.env.COOKIE_DOMAIN || undefined, // Correct domain for cross-subdomain use
-      path: "/", // Ensure the path is correct
+      path: "/", // Ensure the path is correct */
     },
   })
 );
@@ -129,9 +132,9 @@ app.use((req, res, next) => {
 // Serve favicon
 app.use(favicon(path.join(__dirname, "public", "images", "logoicon.svg")));
 
-app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/posts", postsRouter);
+// app.use("/", indexRouter);
+app.use("/api/users", usersRouter);
+app.use("/api/posts", postsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -149,6 +152,10 @@ app.use(function (err, req, res, next) {
     success: false,
     message: err.message,
   });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
 module.exports = app;

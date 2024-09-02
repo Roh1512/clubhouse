@@ -1,0 +1,54 @@
+.modalMain {
+  background: rgba(0, 0, 0, 0.42);
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+.commentsContainer {
+  padding-left: 1rem;
+}
+.commentItem {
+  list-style: none;
+  border: 2px solid var(--primary-bg);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin-bottom: 1rem;
+  border-radius: 10px 0 20px 0;
+  background-color: var(--post-item-bg);
+}
+.postContent {
+  text-align: center;
+  border: 2px solid var(--primary-bg);
+}
+.commentHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--primary-bg);
+  padding: 0 0.3rem;
+}
+.link {
+  color: inherit;
+}
+.commentHeaderBtns {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.date {
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+.commentText {
+  padding: 0 1rem;
+  height: min-content;
+}
+.deleteBtn2 {
+  transition: all 200ms;
+}
+.deleteBtn2:active {
+  transform: scale(0.8);
+}

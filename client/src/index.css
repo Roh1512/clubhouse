@@ -1,0 +1,216 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+:root {
+  font-size: 16px;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+}
+
+[data-theme="light"] {
+  --bg-color: #f5f5f5;
+  --text-color: #040404;
+  --theme-btn-bg: rgba(203, 198, 198, 0.554);
+  --theme-btn-color: rgb(0, 0, 0);
+  --input-text: black;
+  --input-bg: rgb(238, 238, 238);
+  --box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  --form-bg: rgba(171, 170, 170, 0.634);
+  --app-nav-bg: rgb(214, 214, 214);
+  --navLink-text: black;
+  --navLink-bg: rgb(255, 255, 255);
+  --post-item-bg: rgba(220, 220, 220, 0.403);
+  --primary-bg: rgba(182, 181, 181, 0.863);
+  --primary-color: rgb(46, 46, 46);
+  --likeBtnBg: rgb(121, 0, 0);
+  --likeBtnColor: white;
+  --likeBtnActiveBg: rgb(159, 0, 0);
+  --likeBtnActiveColor: white;
+}
+
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #f5f5f5;
+  --theme-btn-bg: rgb(37, 36, 36);
+  --theme-btn-color: rgb(255, 255, 255);
+  --input-bg: rgba(0, 1, 19, 0.728);
+  --input-text: white;
+  --box-shadow: rgba(84, 75, 75, 0.25) 0px 14px 28px,
+    rgba(58, 46, 46, 0.22) 0px 10px 10px;
+  --form-bg: rgba(92, 92, 92, 0.484);
+  --app-nav-bg: rgb(38, 38, 51);
+  --navLink-text: rgb(167, 167, 167);
+  --navLink-bg: rgb(19, 19, 19);
+  --post-item-bg: rgba(47, 47, 47, 0.538);
+  --primary-bg: rgb(88, 88, 88);
+  --primary-color: rgb(170, 170, 170);
+  --likeBtnBg: rgb(251, 0, 0);
+  --likeBtnColor: black;
+  --likeBtnActiveBg: rgb(159, 0, 0);
+  --likeBtnActiveColor: white;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  min-height: 100vh;
+  width: 100%;
+  transition: all 200ms;
+  max-width: 1800px;
+  margin: 0 auto;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: normal;
+  justify-content: space-between;
+}
+
+.themeToggleButton {
+  padding: 0.3rem;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  color: var(--theme-btn-color);
+  transition: all 200ms;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+}
+.themeToggleButton:active {
+  transform: scale(0.8);
+}
+
+header {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.4rem;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+  background-color: var(--bg-color);
+  max-width: 1800px;
+}
+
+main {
+  margin-top: 3.5rem;
+  margin-bottom: 3.3rem;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  cursor: pointer;
+  color: var(--text-color);
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+.logoIconImage {
+  height: 2.5rem;
+  object-fit: cover;
+}
+
+.custom-input {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+}
+.custom-input:focus {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+  outline: 2px solid blue;
+}
+
+.auth-paragraph {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.loginForm {
+  max-width: 45rem;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: var(--form-bg);
+  text-align: center;
+  border-radius: 0.6rem;
+}
+.selectInput {
+  background-color: var(--input-bg);
+  color: var(--input-text);
+}
+
+.loginButton {
+  width: 100%;
+  margin-top: 1rem;
+  box-shadow: var(--box-shadow);
+  transition: all 200ms;
+  font-weight: 500;
+}
+.loginButton:active {
+  box-shadow: none;
+  transform: scale(0.9);
+}
+.errorDiv {
+  margin-top: 1rem;
+}
+.errorMessageContainer {
+  background-color: rgb(98, 0, 0);
+  color: #d5b6b6;
+  padding: 0.4rem;
+}
+
+.appNav {
+  display: flex;
+  gap: 1rem;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+}
+
+.logoutButton {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 1rem;
+}
+
+footer {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (max-width: 500px) {
+  .buttonTextForBigScreen {
+    display: none;
+  }
+}

@@ -1,0 +1,12 @@
+.backButton {
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--text-color);
+  transition: all 200ms;
+}
+.backButton:active {
+  transform: scale(0.8);
+}

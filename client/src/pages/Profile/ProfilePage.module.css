@@ -1,0 +1,23 @@
+.profileDiv {
+  text-align: center;
+  background-color: var(--theme-btn-bg);
+  padding: 1rem;
+}
+
+.profilePageHeading {
+  border-bottom: 2px solid var(--primary-bg);
+}
+
+.fullName {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.buttonContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 2rem;
+}

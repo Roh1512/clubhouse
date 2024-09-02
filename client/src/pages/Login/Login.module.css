@@ -1,0 +1,20 @@
+.loginForm {
+  max-width: 70rem;
+  margin: 0 auto;
+  padding: 1rem;
+  background-color: var(--form-bg);
+  margin-top: 4rem;
+  text-align: center;
+  border-radius: 0.6rem;
+}
+.loginButton {
+  width: 100%;
+  margin-top: 1rem;
+  box-shadow: var(--box-shadow);
+  transition: all 200ms;
+  font-weight: 500;
+}
+.loginButton:active {
+  box-shadow: none;
+  transform: scale(0.9);
+}

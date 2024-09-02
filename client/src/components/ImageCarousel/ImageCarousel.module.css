@@ -1,0 +1,16 @@
+/* .carouselContainer {
+  width: 700px;
+} */
+
+.carouselContainer {
+  height: 100%;
+  width: 100%;
+}
+.carouselImage {
+  margin: 0 auto;
+  align-self: center;
+  max-height: 400px;
+  max-width: 100%;
+  object-fit: contain;
+  filter: brightness(98%);
+}

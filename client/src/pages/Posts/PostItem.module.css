@@ -1,0 +1,52 @@
+.postItem {
+  width: 40rem;
+  background-color: var(--post-item-bg);
+  border: 2px solid var(--primary-bg);
+}
+.headingDiv {
+  width: 100%;
+  /* background-color: var(--primary-bg); */
+  border-bottom: 2px solid var(--primary-bg);
+  color: var(--primary-color);
+  padding: 0.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headingLink {
+  color: var(--text-color);
+  text-decoration: none;
+  display: flex;
+  gap: 0.6rem;
+  font-size: 2rem;
+  align-items: center;
+}
+.carouselDiv {
+  border-bottom: 2px solid var(--primary-bg);
+}
+.detailsDiv {
+  padding: 0rem;
+  text-align: center;
+}
+
+.buttonsDiv {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 1rem;
+  gap: 1rem;
+}
+
+.dateParagraph {
+  align-self: center;
+  justify-self: center;
+  font-size: 1.2rem;
+}
+
+@media only screen and (max-width: 600px) {
+  .postItem {
+    width: 100%;
+  }
+}

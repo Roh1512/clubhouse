@@ -1,0 +1,7 @@
+.deleteBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  place-content: center;
+  transition: all 300mx;
+}

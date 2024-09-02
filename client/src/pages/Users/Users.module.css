@@ -1,0 +1,38 @@
+.profileDiv {
+  text-align: center;
+  background-color: var(--theme-btn-bg);
+  padding: 1rem;
+}
+
+.usersListContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+.fullName {
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.userLink {
+  text-decoration: none;
+  color: var(--text-color);
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: flex-start;
+  height: fit-content;
+  background-color: var(--app-nav-bg);
+  padding: 0.3rem;
+}
+.userIcon {
+  font-size: 2rem;
+  align-self: center;
+}
+.username {
+  align-self: center;
+  margin: auto 0;
+}

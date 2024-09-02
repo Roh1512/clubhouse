@@ -10,7 +10,7 @@
       "@/*": ["src/*"]
     },
     "typeRoots": ["node_modules/@types"],
-    "types": ["vite/client", "@vitejs/plugin-react-swc"],
+    "types": ["vite/client", "@vitejs/plugin-react"],
     "strict": true,
     "noEmit": true
   }

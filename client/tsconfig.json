@@ -1,17 +1,17 @@
 {
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.app.json" },
-    { "path": "./tsconfig.node.json" }
-  ],
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]
     },
     "typeRoots": ["node_modules/@types"],
-    "types": ["vite/client", "@vitejs/plugin-react"],
+    "types": ["vite/client"],
     "strict": true,
     "noEmit": true
-  }
+  },
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

@@ -24,8 +24,6 @@ const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const postsRouter = require("./routes/posts");
 
-const __dirname = path.resolve();
-
 const app = express();
 
 app.use(express.static(path.join(__dirname, "/client/dist")));

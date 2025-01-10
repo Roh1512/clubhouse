@@ -35,6 +35,8 @@ A social media app where users can sign up and post content on the app. User can
 
 ## Installation
 
+### Prerequisites
+
 - Node.js 16+
 - MongoDB database instance
 

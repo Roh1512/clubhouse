@@ -136,6 +136,10 @@ app.use(favicon(path.join(__dirname, "public", "images", "logoicon.svg")));
 app.use("/api/users", usersRouter);
 app.use("/api/posts", postsRouter);
 
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
@@ -152,10 +156,6 @@ app.use(function (err, req, res, next) {
     success: false,
     message: err.message,
   });
-});
-
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
 });
 
 module.exports = app;

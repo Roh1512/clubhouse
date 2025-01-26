@@ -9,5 +9,5 @@ module.exports.isAuthenticated = (req, res, next) => {
   // res.redirect("/loginError");
   console.log("Failed authentication");
 
-  res.status(403).json({ msg: "Unauthorized" });
+  res.redirect("/login");
 };

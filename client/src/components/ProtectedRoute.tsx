@@ -3,12 +3,12 @@ import { useAppSelector } from "../features/hooks";
 import { RootState } from "../features/store";
 
 const ProtectedRoute = () => {
-  const isAuthenticated = useAppSelector(
-    (state: RootState) => state.auth.isAuthenticated
+  const {isAuthenticated, user} = useAppSelector(
+    (state: RootState) => state.auth
   );
   // console.log(isAuthenticated);
 
-  return isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
+  return (isAuthenticated && user) ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoute;
